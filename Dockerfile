@@ -22,4 +22,5 @@ EXPOSE 22 2181 2888 3888
 WORKDIR $ZK_HOME
 VOLUME ["/opt/zookeeper-3.4.6/conf", "/opt/zookeeper-3.4.6/data"]
 RUN service sshd start
-CMD ["$ZK_HOME/bin/zkServer.sh","start-foreground"]
+ENTRYPOINT ["$ZK_HOME/bin/zkServer.sh"]
+CMD ["start-foreground"]
