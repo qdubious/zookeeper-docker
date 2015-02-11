@@ -19,8 +19,7 @@ RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/ss
 
 EXPOSE 22 2181 2888 3888
 
-WORKDIR /opt/zookeeper-3.4.6
+WORKDIR $ZK_HOME
 VOLUME ["/opt/zookeeper-3.4.6/conf", "/opt/zookeeper-3.4.6/data"]
 RUN service sshd start
-ENTRYPOINT ["/opt/zookeeper-3.4.6/bin/zkServer.sh"]
-CMD ["start-foreground"]
+CMD [ "$ZK_HOME/bin/zkServer.sh", "start-foreground" ]
