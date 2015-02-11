@@ -14,12 +14,13 @@ RUN wget -q http://mirrors.koehn.com/apache/zookeeper/current/zookeeper-3.4.6.ta
 RUN tar xfz /tmp/zookeeper-3.4.6.tar.gz -C /opt
 RUN mv /opt/zookeeper-3.4.6/conf/zoo_sample.cfg /opt/zookeeper-3.4.6/conf/zoo.cfg
 ENV ZK_HOME /opt/zookeeper-3.4.6
-RUN sed -i 's|/tmp/zookeeper|$ZK_HOME/data|g' $ZK_HOME/conf/zoo.cfg; mkdir $ZK_HOME/data
+RUN sed -i 's|/tmp/zookeeper|$ZK_HOME/data|g' $ZK_HOME/conf/zoo.cfg; mkdir -p $ZK_HOME/data
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 EXPOSE 22 2181 2888 3888
 
 WORKDIR $ZK_HOME
-VOLUME ["/opt/zookeeper-3.4.6/conf", "/opt/zookeeper-3.4.6/data"]
+VOLUME ["$ZK_HOME/conf", "$ZK_HOME/data"]
 RUN service sshd start
-CMD [ "$ZK_HOME/bin/zkServer.sh", "start-foreground" ]
+ENTRYPOINT ["/opt/zookeeper/bin/zkServer.sh"]
+CMD ["start-foreground"]
